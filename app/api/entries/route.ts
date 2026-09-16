@@ -1,4 +1,4 @@
-import { entries, database } from '../../store';
+import { entries, saveEntry, BlobPreconditionFailedError } from '../../store';
 import { isOwner, sameOrigin } from '../../owner';
 import { kinds } from '../../content';
 export async function GET(request: Request) { const all = new URL(request.url).searchParams.get('all') === '1'; if (all && !await isOwner())
@@ -28,10 +28,11 @@ export async function POST(request: Request) { if (!await isOwner() || !sameOrig
         throw new Error('External links must use https://');
     if (e.attachment && !/^\/api\/media\/[a-f0-9-]{36}$/.test(e.attachment))
         throw new Error('Please use an uploaded attachment.');
-    await database().prepare('INSERT INTO entries (id,kind,title,summary,body,url,attachment,published,updated) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET kind=excluded.kind,title=excluded.title,summary=excluded.summary,body=excluded.body,url=excluded.url,attachment=excluded.attachment,published=excluded.published,updated=excluded.updated').bind(e.id, e.kind, e.title.trim(), e.summary, e.body, e.url, e.attachment, e.published, new Date().toISOString()).run();
+    await saveEntry({...e,title:e.title.trim(),updated:new Date().toISOString()});
     return Response.json({ ok: true });
 }
 catch (error) {
     console.error(error);
+    if(error instanceof BlobPreconditionFailedError)return Response.json({error:'Another save happened at the same time. Your text is still here; please save again.'},{status:409});
     return Response.json({ error: error instanceof SyntaxError ? 'Invalid entry.' : error instanceof Error && !error.message.includes('D1') ? error.message : 'Could not save. Your text is still here; please try again.' }, { status: 400 });
 } }

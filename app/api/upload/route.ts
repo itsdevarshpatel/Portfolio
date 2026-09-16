@@ -1,10 +1,11 @@
-import { env } from 'cloudflare:workers';
+import {put} from '@vercel/blob';
+import {storageConfigured} from '../../store';
 import { isOwner, sameOrigin } from '../../owner';
 export async function POST(request: Request) { if (!await isOwner() || !sameOrigin(request))
     return Response.json({ error: 'Editor access required.' }, { status: 403 }); const allowed = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf', 'audio/mpeg', 'audio/wav', 'video/mp4', 'video/webm']; const type = request.headers.get('content-type') || ''; if (!allowed.includes(type))
-    return Response.json({ error: 'Choose a JPG, PNG, WebP, PDF, MP3, WAV, MP4, or WebM file.' }, { status: 415 }); if (Number(request.headers.get('content-length')) > 20 * 1024 * 1024)
-    return Response.json({ error: 'The attachment limit is 20 MB. Link to larger videos instead.' }, { status: 413 }); try {
-    if (!env.BUCKET)
+    return Response.json({ error: 'Choose a JPG, PNG, WebP, PDF, MP3, WAV, MP4, or WebM file.' }, { status: 415 }); if (Number(request.headers.get('content-length')) > 4 * 1024 * 1024)
+    return Response.json({ error: 'The attachment limit is 4 MB. Link to larger videos instead.' }, { status: 413 }); try {
+    if (!storageConfigured())
         throw new Error('Storage unavailable');
     const reader = request.body?.getReader();
     if (!reader)
@@ -16,9 +17,9 @@ export async function POST(request: Request) { if (!await isOwner() || !sameOrig
         if (done)
             break;
         size += value.length;
-        if (size > 20 * 1024 * 1024) {
+        if (size > 4 * 1024 * 1024) {
             await reader.cancel();
-            return Response.json({ error: 'The attachment limit is 20 MB.' }, { status: 413 });
+            return Response.json({ error: 'The attachment limit is 4 MB.' }, { status: 413 });
         }
         chunks.push(value);
     }
@@ -31,10 +32,11 @@ export async function POST(request: Request) { if (!await isOwner() || !sameOrig
         offset += chunk.length;
     }
     const id = crypto.randomUUID();
-    await env.BUCKET.put(id, bytes, { httpMetadata: { contentType: type } });
+    await put('notebook/media/'+id,Buffer.from(bytes),{access:'private',addRandomSuffix:false,contentType:type});
     return Response.json({ url: '/api/media/' + id });
 }
 catch (error) {
     console.error(error);
     return Response.json({ error: 'Upload failed. Your entry has not been changed.' }, { status: 503 });
 } }
+
