@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-    title: "Devarsh Patel — Software & Creative Work",
-    description: "Software engineering, AI, and creative work by Devarsh Patel. Built with logic. Led by curiosity.",
+    title: "Devarsh Patel — A Personal Universe",
+    description: "Explore the software, AI, and creative work of Devarsh Patel. A curious mind. An open universe.",
     other: {
         "codex-preview": "development",
     },
@@ -18,4 +18,5 @@ export default function RootLayout({ children, }: Readonly<{
       <body className="antialiased">{children}</body>
     </html>);
 }
+
 
