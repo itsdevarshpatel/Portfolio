@@ -1,3 +1,3 @@
-import { Footer } from './notebook';
-export function Header() { return <header className="topbar"><a className="brand" href="/">d/p</a><a className="wordmark" href="/">DEVARSH PATEL<br /><small>AN OPEN NOTEBOOK</small></a><nav><a href="/">The map</a><a href="/#work">Build log</a><a href="/#about">The person</a></nav><a className="contact" href="/#social">Let's talk ↗</a></header>; }
-export { Footer };
+import './editorial.css';
+export function Header(){return <div className="folio"><header className="folio-nav"><a className="folio-name" href="/">Devarsh Patel<span aria-hidden="true">✳</span></a><nav aria-label="Main navigation"><a href="/#work">Work</a><a href="/#about">About</a><a className="folio-pill" href="mailto:pateldevarsh43@gmail.com">Say hello ↗</a></nav></header></div>}
+export function Footer(){return <div className="folio"><footer className="folio-footer"><div className="folio-footer-bottom" style={{marginTop:0}}><a href="/">← Back home</a><a href="mailto:pateldevarsh43@gmail.com">Say hello ↗</a></div></footer></div>}
