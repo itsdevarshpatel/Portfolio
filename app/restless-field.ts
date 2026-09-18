@@ -3,7 +3,8 @@ const colors=['#ff5a36','#c8ff3d','#8db8ff','#ffc2df','#ffcf55','#9d8cff','#72e6
 
 /** Draws a cursor-reactive field without causing React renders on animation frames. */
 export function createRestlessField(canvas:HTMLCanvasElement,onHover:(index:number|null)=>void):FieldControl{
- const context=canvas.getContext('2d');if(!context)throw new Error('Canvas unavailable');
+ const context=canvas.getContext('2d')!;
+ if(!context)throw new Error('Canvas unavailable');
  let width=1,height=1,dpr=1,frame=0,time=0,frozen=false,focus:number|null=null,hover:number|null=null;
  const pointer={x:.64,y:.48,tx:.64,ty:.48,inside:false};
  const dust=Array.from({length:110},(_,i)=>({angle:i*2.399,r:.12+(i%23)/25*.46,s:.15+(i%9)*.018,size:i%7===0?1.8:.7}));
