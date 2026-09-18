@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-    title: "Devarsh Patel — A Personal Universe",
-    description: "Explore the software, AI, and creative work of Devarsh Patel. A curious mind. An open universe.",
+    title: "Devarsh Patel — The Restless Mind Index",
+    description: "Software, AI, creative work, and the questions connecting them. An interactive portfolio by Devarsh Patel.",
     other: {
         "codex-preview": "development",
     },
