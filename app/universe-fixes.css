@@ -7,3 +7,38 @@
   margin:auto;
   box-shadow:18px 18px 0 var(--signal,#ff5a36);
 }
+.evidence-items{
+  display:grid;
+  gap:1px;
+  margin:24px 0;
+  background:#11120f;
+  border:1px solid #11120f;
+}
+.evidence-items a,
+.evidence-items article{
+  position:relative;
+  display:grid;
+  gap:7px;
+  margin:0;
+  padding:14px 42px 14px 16px;
+  background:#e8e8db;
+  color:#11120f;
+  text-decoration:none;
+}
+.evidence-items small{
+  font:500 8px DM Mono,monospace;
+  letter-spacing:1px;
+  color:#65695f;
+}
+.evidence-items strong{
+  font:500 13px/1.45 Manrope,sans-serif;
+}
+.evidence-items a>span{
+  position:absolute;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
+}
+.evidence-items a:hover{
+  background:var(--signal);
+}
