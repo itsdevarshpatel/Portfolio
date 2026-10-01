@@ -33,6 +33,12 @@
 .evidence-items strong{
   font:500 13px/1.45 Manrope,sans-serif;
 }
+.evidence-items p{
+  max-width:46ch;
+  margin:1px 0 0;
+  color:#5f635a;
+  font:400 11px/1.55 Manrope,sans-serif;
+}
 .evidence-items a>span{
   position:absolute;
   right:16px;
